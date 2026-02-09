@@ -76,7 +76,16 @@ class AddExpenseScreen extends StatelessWidget {
                       maxLines: 4,
                     ),
 
-                    AppButton(title: 'Save', onPressed: () {}),
+                    AppButton(
+                      title: 'Save',
+                      textStyle: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.textGreenColor,
+                      ),
+                      onPressed: () {},
+                    ),
+                    const SizedBox(height: 20),
                   ],
                 ),
               ),

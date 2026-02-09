@@ -54,15 +54,15 @@ class AppTheme {
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-        backgroundColor: AppColors.cyprusGreen,
+        backgroundColor: AppColors.caribbeanGreen,
         foregroundColor: AppColors.honeydewGreen,
         textStyle: TextStyle(
-          color: AppColors.honeydewGreen,
+          color: AppColors.textGreenColor,
           fontWeight: FontWeight.w700,
           fontSize: 20,
         ),
-        minimumSize: Size(double.infinity, 50),
-        maximumSize: Size(double.infinity, 50),
+        minimumSize: Size(200, 50),
+        maximumSize: Size(220, 50),
       ),
     ),
     textButtonTheme: TextButtonThemeData(
@@ -74,6 +74,18 @@ class AppTheme {
         ),
         minimumSize: Size(200, 50),
         maximumSize: Size(220, 50),
+      ),
+    ),
+    appBarTheme: AppBarTheme(
+      leadingWidth: 40,
+      iconTheme: IconThemeData(color: AppColors.honeydewGreen),
+      backgroundColor: AppColors.fenceGreen,
+      elevation: 0,
+      centerTitle: true,
+      titleTextStyle: TextStyle(
+        fontSize: 20,
+        fontWeight: FontWeight.w700,
+        color: AppColors.lightGreen,
       ),
     ),
   );

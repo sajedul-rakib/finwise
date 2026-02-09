@@ -38,11 +38,21 @@ void showAddDialog(BuildContext context) {
                 AppButton(
                   title: "Save",
                   onPressed: () => Navigator.pop(context),
+                  textStyle: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.textGreenColor,
+                  ),
                 ),
                 AppButton(
                   onPressed: () => Navigator.pop(context),
                   title: "Cancel",
                   bgColor: AppColors.lightGreen,
+                  textStyle: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.textGreenColor,
+                  ),
                 ),
               ],
             ),

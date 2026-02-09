@@ -2,6 +2,7 @@ import 'package:finwise/core/constant/app_colors.dart';
 import 'package:finwise/features/finger/presentation/view/fingerprint_screen.dart';
 import 'package:finwise/features/profile/presentation/view/terms_condition_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_ce_flutter/hive_ce_flutter.dart';
 
 import '../widgets/security_item.dart';
 import '../../../password/presentation/view/change_pin_screen.dart';
@@ -11,6 +12,8 @@ class SecurityScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final box = Hive.box('settings');
+    final bool hasPin = box.get('hasPin', defaultValue: false);
     return Scaffold(
       appBar: AppBar(title: const Text("Security"), centerTitle: true),
       body: Container(
@@ -35,7 +38,7 @@ class SecurityScreen extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             SecurityItem(
-              title: "Change Pin",
+              title: hasPin ? "Change Pin" : "Set Pin",
               showUnderBorder: true,
               onTap: () {
                 Navigator.push(

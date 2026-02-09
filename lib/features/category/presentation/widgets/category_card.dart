@@ -30,12 +30,17 @@ class CategoryCard extends StatelessWidget {
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Center(
-                child: ImageViewer(
-                  imagePath: category.icon,
-                  color: AppColors.lightGreen,
-                  width: 50,
-                  height: 50,
-                  fit: BoxFit.contain,
+                child: Transform.rotate(
+                  angle: category.title.toLowerCase() == 'entertainment'
+                      ? -90 * 3.1416 / 360
+                      : 0,
+                  child: ImageViewer(
+                    imagePath: category.icon,
+                    color: AppColors.lightGreen,
+                    width: 50,
+                    height: 50,
+                    fit: BoxFit.contain,
+                  ),
                 ),
               ),
             ),
@@ -44,7 +49,7 @@ class CategoryCard extends StatelessWidget {
           Text(
             category.title,
             style: TextStyle(
-              fontSize: 15,
+              fontSize: 13,
               fontWeight: FontWeight.w700,
               color: AppColors.textGreenColor,
             ),

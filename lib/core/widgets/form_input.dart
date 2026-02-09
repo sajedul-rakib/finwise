@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../constant/app_colors.dart';
 
@@ -20,8 +21,7 @@ class FormInput extends StatelessWidget {
     this.focusNode,
     this.onSaved,
     this.initialValue,
-    this.maxLines,
-    this.minLines,
+    this.maxLines = 1,
     this.maxLength,
     this.fillColor,
     this.textColor,
@@ -30,6 +30,9 @@ class FormInput extends StatelessWidget {
     this.borderRadius,
     this.contentPadding,
     this.border,
+    this.inputFormatters,
+    this.obscureText = false,
+    this.errorBuilder,
   });
 
   final String hintText;
@@ -47,8 +50,7 @@ class FormInput extends StatelessWidget {
   final FocusNode? focusNode;
   final ValueChanged<String>? onSaved;
   final String? initialValue;
-  final int? maxLines;
-  final int? minLines;
+  final int maxLines;
   final int? maxLength;
   final Color? fillColor;
   final Color? textColor;
@@ -57,6 +59,9 @@ class FormInput extends StatelessWidget {
   final double? borderRadius;
   final EdgeInsetsGeometry? contentPadding;
   final OutlineInputBorder? border;
+  final List<TextInputFormatter>? inputFormatters;
+  final bool obscureText;
+  final Widget Function(BuildContext, String?)? errorBuilder;
 
   @override
   Widget build(BuildContext context) {
@@ -76,17 +81,18 @@ class FormInput extends StatelessWidget {
           ),
 
         TextFormField(
+          errorBuilder: errorBuilder,
           style: TextStyle(
             color: textColor ?? AppColors.textGreenColor,
             fontSize: 16,
             fontWeight: FontWeight.w600,
           ),
           maxLines: maxLines,
+          obscureText: obscureText,
           decoration: InputDecoration(
             prefixIcon: prefixIcon,
             suffixIcon: suffixIcon,
             hintText: hintText,
-
             hintStyle: TextStyle(
               color: hintColor ?? Color(0xff81A498),
               fontSize: 15,
@@ -96,9 +102,7 @@ class FormInput extends StatelessWidget {
                 border ??
                 OutlineInputBorder(
                   borderSide: BorderSide.none,
-                  borderRadius: BorderRadius.circular(
-                    maxLines == null ? 50 : 20,
-                  ),
+                  borderRadius: BorderRadius.circular(maxLines == 1 ? 50 : 20),
                 ),
             filled: true,
             fillColor: fillColor ?? AppColors.lightGreen,
@@ -109,10 +113,12 @@ class FormInput extends StatelessWidget {
             focusedBorder: border,
             errorBorder: border,
             focusedErrorBorder: border,
+            errorStyle: TextStyle(color: Color(0xffef4444)),
           ),
           validator: validator,
           controller: controller,
           keyboardType: keyboardType,
+          inputFormatters: inputFormatters,
         ),
       ],
     );

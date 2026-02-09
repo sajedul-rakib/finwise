@@ -11,8 +11,12 @@ class AuthScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
     return Scaffold(
-      backgroundColor: AppColors.honeydewGreen,
+      backgroundColor: isDarkMode
+          ? AppColors.fenceGreen
+          : AppColors.honeydewGreen,
       body: Column(
         spacing: 10,
         mainAxisAlignment: MainAxisAlignment.center,
@@ -31,7 +35,9 @@ class AuthScreen extends StatelessWidget {
               'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.',
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: AppColors.textGreenColor,
+                color: isDarkMode
+                    ? AppColors.lightGreen
+                    : AppColors.textGreenColor,
                 fontSize: 13,
                 fontWeight: FontWeight.w500,
                 letterSpacing: 1,
@@ -85,7 +91,9 @@ class AuthScreen extends StatelessWidget {
               'Forgot Password?',
               style: TextStyle(
                 fontFamily: GoogleFonts.leagueSpartan().fontFamily,
-                color: AppColors.textGreenColor,
+                color: isDarkMode
+                    ? AppColors.lightGreen
+                    : AppColors.textGreenColor,
                 fontWeight: FontWeight.w900,
                 fontSize: 20,
               ),

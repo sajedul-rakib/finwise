@@ -1,6 +1,7 @@
 import 'package:finwise/features/onboarding/presentation/widgets/page.dart';
 import 'package:finwise/features/splash/presentation/view/auth_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_ce_flutter/hive_ce_flutter.dart';
 
 import '../../../../core/constant/app_colors.dart';
 
@@ -68,6 +69,8 @@ class _OnboardingScreenState extends State<OnboardingScreen>
               children: [
                 TextButton(
                   onPressed: () {
+                    final box = Hive.box('settings');
+                    box.put('isFirstOpen', false);
                     _tabController.index == _tabController.length - 1
                         ? Navigator.pushAndRemoveUntil(
                             context,

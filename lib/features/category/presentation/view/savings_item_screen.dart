@@ -238,6 +238,11 @@ class SavingsItemScreen extends StatelessWidget {
                         SafeArea(
                           child: AppButton(
                             title: "Add Savings",
+                            textStyle: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w600,
+                              color: AppColors.textGreenColor,
+                            ),
                             onPressed: () {
                               Navigator.push(
                                 context,
@@ -248,6 +253,7 @@ class SavingsItemScreen extends StatelessWidget {
                             },
                           ),
                         ),
+                        const SizedBox(height: 20),
                       ],
                     ),
                   ),
