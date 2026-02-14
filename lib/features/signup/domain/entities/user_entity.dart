@@ -1,15 +1,17 @@
 class UserEntity {
   final String userId;
-  final String fullName;
+  final String? fullName;
   final String email;
-  final String mobileNumber;
-  final DateTime dateOfBirth;
+  final String? avatar;
+  final String? mobileNumber;
+  final DateTime? dateOfBirth;
 
   UserEntity({
     required this.userId,
-    required this.fullName,
     required this.email,
-    required this.mobileNumber,
-    required this.dateOfBirth,
+    this.fullName,
+    this.avatar,
+    this.mobileNumber,
+    this.dateOfBirth,
   });
 }

@@ -1,7 +1,8 @@
+import 'package:finwise/features/signup/domain/entities/user_entity.dart';
+
 abstract class SignUpRepository {
-  Future<void> signUpWithEmailAndPassword({
-    required String email,
-    required password,
-    Map<String, dynamic>? payloads,
+  Future<UserEntity> signUpWithEmailAndPassword({
+    required String password,
+    required UserEntity user,
   });
 }
