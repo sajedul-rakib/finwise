@@ -151,7 +151,7 @@ class BarChartSample2State extends State<BarChartSample2> {
       return Container();
     }
     return SideTitleWidget(
-      angle: -360,
+      angle: 120,
       meta: meta,
       space: 5,
       child: Text(text, style: style),

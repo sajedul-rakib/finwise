@@ -13,29 +13,36 @@ class LocalPinDatasourceImpl implements LocalPinDatasource {
 
   @override
   Future<bool> clearPin() {
+    //delete pin from local storage
     _box.delete('pin');
+    // set false for checking has security in the device
+    _box.put("hasPin", false);
     final boxPin = _box.get('pin', defaultValue: '');
     return Future.value(boxPin.isEmpty);
   }
 
+  //this function work for set for a new pin, and change pin
   @override
   Future<bool> setPin(String pin) async {
-    final findPreviousPin = _box.get('pin', defaultValue: '');
-    if (findPreviousPin.isNotEmpty && findPreviousPin == pin) {
-      throw Exception(
-        'Your current pin and previous pin are same.Please try again with different pin.',
-      );
+    bool hasPin = _box.get("hasPin", defaultValue: false);
+
+    if (hasPin) {
+      final findPreviousPin = _box.get('pin', defaultValue: '');
+      if (findPreviousPin == pin) {
+        throw Exception(
+          'Your current pin and previous pin are same.Please try again with different pin.',
+        );
+      }
     }
     _box.put('pin', pin);
+    _box.put("hasPin", true);
     final hasPinPass = _box.get('pin', defaultValue: '');
-
     return Future.value(hasPinPass.isNotEmpty);
   }
 
   @override
   Future<bool> validatePin(String pin) {
     final boxPin = _box.get('pin', defaultValue: '');
-    if (boxPin.isEmpty) return Future.value(false);
     return Future.value(boxPin == pin);
   }
 }

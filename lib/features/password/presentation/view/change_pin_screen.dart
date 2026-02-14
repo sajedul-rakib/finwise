@@ -47,6 +47,7 @@ class _ChangePinScreenState extends State<ChangePinScreen> {
 
   @override
   Widget build(BuildContext context) {
+    //checking password has bees set before time;
     final box = Hive.box('settings');
     final bool hasPin = box.get('hasPin', defaultValue: false);
     return Scaffold(

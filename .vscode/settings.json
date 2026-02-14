@@ -1,4 +1,11 @@
 {
-    "cmake.sourceDirectory": "/Users/sajedulislamrakib/flutterDev/projects/finwise/linux",
-    "workbench.colorTheme": "Learn with Sumit - Shades of Grey"
+  "cmake.sourceDirectory": "/Users/sajedulislamrakib/flutterDev/projects/finwise/linux",
+  "workbench.colorTheme": "Learn with Sumit - Shades of Grey",
+  "editor.fontSize": 16,
+  "[dart]": {
+    "editor.defaultFormatter": "Dart-Code.dart-code",
+    "editor.formatOnSave": true
+  },
+  "editor.defaultFormatter": "Dart-Code.flutter",
+  "editor.formatOnSave": true
 }
