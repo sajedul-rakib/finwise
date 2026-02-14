@@ -1,6 +1,7 @@
 import 'package:finwise/core/constant/app_colors.dart';
 import 'package:finwise/core/widgets/image_viewer.dart';
 import 'package:finwise/features/login/presentation/view/forget_password_screen.dart';
+import 'package:finwise/features/signup/presentation/view/signup_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -64,7 +65,7 @@ class AuthScreen extends StatelessWidget {
             onPressed: () {
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => LoginScreen()),
+                MaterialPageRoute(builder: (context) => SignupScreen()),
               );
             },
             style: ElevatedButton.styleFrom(

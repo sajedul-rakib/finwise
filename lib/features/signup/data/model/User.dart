@@ -18,7 +18,11 @@ class UserModel extends UserEntity {
       email: map['email'] ?? '',
       avatar: map['avatar'],
       mobileNumber: map['mobileNumber'] ?? '',
-      dateOfBirth: (map['dateOfBirth'] as Timestamp).toDate(),
+      dateOfBirth: map['dateOfBirth'] == null
+          ? null
+          : (map['dateOfBirth'] is Timestamp
+                ? (map['dateOfBirth'] as Timestamp).toDate()
+                : DateTime.tryParse(map['dateOfBirth'].toString())),
     );
   }
 
@@ -29,20 +33,23 @@ class UserModel extends UserEntity {
       'email': email,
       'avatar': avatar,
       'mobileNumber': mobileNumber,
-      'dateOfBirth': dateOfBirth != null
-          ? Timestamp.fromDate(dateOfBirth!)
-          : null,
+      'dateOfBirth': dateOfBirth?.toIso8601String(),
     };
   }
 
-  UserModel copyWith({String? fullName, String? avatar, String? mobileNumber}) {
+  UserModel copyWith({
+    String? fullName,
+    String? avatar,
+    String? mobileNumber,
+    DateTime? dateOfBirth,
+  }) {
     return UserModel(
       userId: userId,
       fullName: fullName ?? this.fullName,
       email: email,
       avatar: avatar ?? this.avatar,
       mobileNumber: mobileNumber ?? this.mobileNumber,
-      dateOfBirth: dateOfBirth,
+      dateOfBirth: dateOfBirth ?? this.dateOfBirth,
     );
   }
 }

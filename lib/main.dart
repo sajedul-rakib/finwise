@@ -5,10 +5,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_ce_flutter/hive_ce_flutter.dart';
 
+import 'features/splash/presentation/riverpod/auth_provider.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await Hive.initFlutter();
-  await Hive.openBox('settings');
-  runApp(ProviderScope(child: const FinWise()));
+  final settingsBox = await Hive.openBox('settings');
+  final authBox = await Hive.openBox("auth_box");
+  runApp(
+    ProviderScope(
+      overrides: [
+        settingsBoxProvider.overrideWithValue(settingsBox),
+        authBoxProvider.overrideWithValue(authBox),
+      ],
+      child: const FinWiseApp(),
+    ),
+  );
 }

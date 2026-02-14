@@ -1,0 +1,50 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hive_ce_flutter/hive_ce_flutter.dart';
+
+import '../../data/datasource/local/auth_local_datasource.dart';
+import '../../data/datasource/remote/auth_remote_datasource.dart';
+import '../../data/repository/auth_repository_impl.dart';
+import '../../domain/repository/auth_repository.dart';
+import '../../domain/usecase/auth_use_case.dart';
+
+// 1. External SDK Providers
+final firebaseAuthProvider = Provider<FirebaseAuth>(
+  (ref) => FirebaseAuth.instance,
+);
+final firestoreProvider = Provider<FirebaseFirestore>(
+  (ref) => FirebaseFirestore.instance,
+);
+// This provider is overridden in main.dart with the opened Hive box
+final authBoxProvider = Provider<Box>((ref) => throw UnimplementedError());
+final settingsBoxProvider = Provider<Box>((ref) => throw UnimplementedError());
+
+// 2. Data Source Providers
+final authRemoteDataSourceProvider = Provider<AuthRemoteDataSource>((ref) {
+  return FirebaseAuthRemoteDataSourceImpl(
+    auth: ref.watch(firebaseAuthProvider),
+    firestore: ref.watch(firestoreProvider),
+  );
+});
+
+final authLocalDataSourceProvider = Provider<AuthLocalDataSource>((ref) {
+  return AuthLocalDataSourceImpl(ref.watch(authBoxProvider));
+});
+
+// 3. Repository Provider
+// Links the implementations to the abstract Repository interface
+final authRepositoryProvider = Provider<AuthRepository>((ref) {
+  return AuthRepositoryImpl(
+    remoteDataSource: ref.watch(authRemoteDataSourceProvider),
+    localDataSource: ref.watch(authLocalDataSourceProvider),
+    firebaseAuth: ref.watch(firebaseAuthProvider),
+  );
+});
+
+// 4. Use Case Provider
+// The UI/Notifier will watch this provider
+final checkAuthStatusUseCaseProvider = Provider<AuthUseCase>((ref) {
+  final repo = ref.watch(authRepositoryProvider);
+  return AuthUseCase(repo: repo, settingsBox: ref.watch(settingsBoxProvider));
+});
