@@ -1,8 +1,13 @@
+import 'dart:developer';
+import 'dart:io';
+
 import 'package:finwise/core/constant/app_colors.dart';
 import 'package:finwise/core/widgets/app_btn.dart';
 import 'package:finwise/core/widgets/form_input.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../../../core/widgets/app_switch_btn.dart';
 import '../../../../core/widgets/image_viewer.dart';
@@ -148,19 +153,22 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           ),
                           Positioned(
                             bottom: 20,
-                            child: Container(
-                              height: 25,
-                              width: 25,
-                              padding: const EdgeInsets.all(5),
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: AppColors.caribbeanGreen,
-                              ),
-                              child: ImageViewer(
-                                imagePath: "assets/images/icons/camera.png",
-                                color: AppColors.textGreenColor,
-                                width: 25,
+                            child: GestureDetector(
+                              onTap: _showImageSourceDialog,
+                              child: Container(
                                 height: 25,
+                                width: 25,
+                                padding: const EdgeInsets.all(5),
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: AppColors.caribbeanGreen,
+                                ),
+                                child: ImageViewer(
+                                  imagePath: "assets/images/icons/camera.png",
+                                  color: AppColors.textGreenColor,
+                                  width: 25,
+                                  height: 25,
+                                ),
                               ),
                             ),
                           ),
@@ -203,6 +211,113 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           ),
         ],
       ),
+    );
+  }
+
+  Future<void> _showImageSourceDialog() async {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) => SafeArea(
+        child: Wrap(
+          children: [
+            ListTile(
+              leading: const Icon(Icons.camera_alt),
+              title: const Text('Camera'),
+              onTap: () {
+                Navigator.pop(context);
+                _pickImage(ImageSource.camera);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.photo_library),
+              title: const Text('Gallery'),
+              onTap: () {
+                Navigator.pop(context);
+                _pickImage(ImageSource.gallery);
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<void> _pickImage(ImageSource source) async {
+    final ImagePicker picker = ImagePicker();
+    try {
+      final XFile? image = await picker.pickImage(
+        source: source,
+        imageQuality: 70, // Optimize for mobile storage
+      );
+
+      if (image != null) {
+        _showPreviewDialog(File(image.path));
+      }
+    } on PlatformException catch (e) {
+      log(
+        "Get platform exception while file uploading. The error is ${e.code}",
+      );
+    } catch (e) {
+      log("Get Error while try to upload file. The error is $e");
+    }
+  }
+
+  void _showPreviewDialog(File imageFile) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          // insetPadding: const EdgeInsets.symmetric(horizontal: 20),
+          // contentPadding: const EdgeInsets.symmetric(
+          //   horizontal: 24,
+          //   vertical: 40,
+          // ),
+          backgroundColor: AppColors.honeydewGreen,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          content: SizedBox(
+            width: MediaQuery.of(context).size.width,
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                spacing: 30,
+                children: [
+                  Container(
+                    height: 300,
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(image: FileImage(imageFile)),
+                    ),
+                  ),
+                  Column(
+                    spacing: 10,
+                    children: [
+                      AppButton(
+                        onPressed: () => Navigator.pop(context),
+                        title: "Upload",
+                        textStyle: TextStyle(
+                          fontSize: 15,
+                          color: AppColors.fenceGreen,
+                        ),
+                      ),
+                      AppButton(
+                        onPressed: () => Navigator.pop(context),
+                        title: "Cancel",
+                        bgColor: Colors.red.shade400,
+                        textStyle: TextStyle(
+                          fontSize: 15,
+                          color: AppColors.textGreenColor,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }

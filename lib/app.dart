@@ -10,15 +10,11 @@ class FinWiseApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // Watch the router provider
     final router = ref.watch(routerProvider);
-
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       title: AppString.appName,
       theme: AppTheme.lightTheme,
-
-      // Hook up GoRouter
       routerConfig: router,
     );
   }

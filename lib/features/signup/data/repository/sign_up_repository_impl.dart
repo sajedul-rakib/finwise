@@ -1,8 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:hive_ce_flutter/hive_ce_flutter.dart';
 import '../../domain/entities/user_entity.dart';
 import '../../domain/repository/sign_up_repository.dart';
-import '../model/User.dart';
+import '../model/user_model.dart';
 
 class SignUpRepositoryImpl implements SignUpRepository {
   final FirebaseAuth _firebaseAuth;
@@ -43,7 +44,8 @@ class SignUpRepositoryImpl implements SignUpRepository {
       // We use .doc(uid).set() instead of .add() to ensure the Firestore
       // Document ID matches the Firebase Auth UID for easy lookups.
       await _firestore.collection("users").doc(uid).set(userModel.toMap());
-
+      final authBox = await Hive.openBox("auth_box");
+      authBox.put("userId", uid);
       return userModel;
     } on FirebaseAuthException catch (e) {
       throw _handleAuthException(e);

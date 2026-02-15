@@ -5,6 +5,8 @@ class UserEntity {
   final String? avatar;
   final String? mobileNumber;
   final DateTime? dateOfBirth;
+  final DateTime? updateAt;
+  final DateTime? createAt;
 
   UserEntity({
     required this.userId,
@@ -13,5 +15,7 @@ class UserEntity {
     this.avatar,
     this.mobileNumber,
     this.dateOfBirth,
+    this.updateAt,
+    this.createAt,
   });
 }

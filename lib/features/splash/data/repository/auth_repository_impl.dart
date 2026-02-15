@@ -75,6 +75,8 @@ class AuthRepositoryImpl implements AuthRepository {
       await _firebaseAuth.signOut();
       await _localDataSource.clearCache();
       final settingsBox = await Hive.openBox("settings");
+      final authBox = await Hive.openBox("auth_box");
+      await authBox.delete("userId");
       await settingsBox.delete('hasPin');
     } catch (e) {
       throw Exception("Logout failed");

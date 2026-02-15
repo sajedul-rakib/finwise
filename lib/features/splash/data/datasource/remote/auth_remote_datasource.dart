@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '../../../../signup/data/model/User.dart';
+import '../../../../signup/data/model/user_model.dart';
 
 abstract class AuthRemoteDataSource {
   Future<User?> getCurrentFirebaseUser();

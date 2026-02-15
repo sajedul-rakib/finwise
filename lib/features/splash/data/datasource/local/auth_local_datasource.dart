@@ -1,6 +1,8 @@
+import 'dart:developer';
+
 import 'package:hive_ce_flutter/hive_ce_flutter.dart';
 
-import '../../../../signup/data/model/User.dart';
+import '../../../../signup/data/model/user_model.dart';
 
 abstract class AuthLocalDataSource {
   Future<void> cacheUser(UserModel user);
@@ -16,6 +18,7 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
 
   @override
   Future<void> cacheUser(UserModel user) async {
+    log("User is ${user.toMap()}");
     // Store user as a Map/JSON string
     await _authBox.put(_userKey, user.toMap());
   }

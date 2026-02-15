@@ -1,8 +1,9 @@
 import 'package:finwise/features/login/domain/repository/login_repository.dart';
 import 'package:finwise/features/signup/domain/entities/user_entity.dart';
 import 'package:finwise/features/splash/data/datasource/local/auth_local_datasource.dart';
+import 'package:hive_ce_flutter/hive_ce_flutter.dart';
 
-import '../../../signup/data/model/User.dart';
+import '../../../signup/data/model/user_model.dart';
 import '../datasource/remote/loing_remote_datasource.dart';
 
 class LoginRepositoryImpl implements LoginRepository {
@@ -19,6 +20,8 @@ class LoginRepositoryImpl implements LoginRepository {
       final profile = await getLoggedUserProfileData(
         userId: credential.user!.uid,
       );
+      final authBox = await Hive.openBox("auth_box");
+      await authBox.put("userId", credential.user!.uid);
       await localDS.cacheUser(profile as UserModel);
     }
   }

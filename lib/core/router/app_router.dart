@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -18,23 +20,31 @@ final routerProvider = Provider<GoRouter>((ref) {
       final authState = ref.read(authNotifierProvider);
       final path = state.uri.path;
 
-      // 1. Handle Initialization
+      log("The auth state is $authState and current path is $path");
+
+      // 1. If still loading data, stay at splash
       if (authState == AuthState.unknown) return '/splash';
 
-      // 2. Define page types
-      final isPublicPage =
-          path == '/login' || path == '/splash' || path == '/onboarding';
+      // 2. Priority Redirects (Onboarding & Pin)
+      if (authState == AuthState.onboarding && path != '/onboarding') {
+        return '/onboarding';
+      }
+      if (authState == AuthState.pinRequired && path != '/pin') return '/pin';
 
-      // 3. Authenticated Logic
+      // 3. Define page types
+      // Remove '/splash' from public pages because no one should stay there after init
+      final isAuthPage = path == '/auth' || path == '/onboarding';
+
+      // 4. Authenticated Logic
       if (authState == AuthState.authenticated) {
-        // If logged in, don't allow staying on splash/login/onboarding
-        return isPublicPage ? '/home' : null;
+        // If logged in, move from splash/auth/onboarding to home
+        return (path == '/splash' || isAuthPage) ? '/home' : null;
       }
 
-      // 4. Unauthenticated Logic (LOGOUT happens here)
+      // 5. Unauthenticated Logic
       if (authState == AuthState.unauthenticated) {
-        // If not logged in and trying to access a private page, force to login
-        return isPublicPage ? null : '/login';
+        // If not on the auth page, force them there (including from splash)
+        return path == '/auth' ? null : '/auth';
       }
 
       return null;
@@ -48,7 +58,7 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/onboarding',
         builder: (context, state) => const OnboardingScreen(),
       ),
-      GoRoute(path: '/login', builder: (context, state) => const AuthScreen()),
+      GoRoute(path: '/auth', builder: (context, state) => const AuthScreen()),
       GoRoute(
         path: '/home',
         builder: (context, state) => const AppBottomNavBar(),
