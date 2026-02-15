@@ -1,4 +1,6 @@
+import 'package:finwise/features/splash/presentation/riverpod/auth_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/constant/app_colors.dart';
 import '../../../../core/widgets/app_btn.dart';
@@ -46,13 +48,20 @@ void showLogoutDialog(BuildContext context) {
                 Column(
                   spacing: 10,
                   children: [
-                    AppButton(
-                      onPressed: () => Navigator.pop(context),
-                      title: "Yes, End Session",
-                      textStyle: TextStyle(
-                        fontSize: 15,
-                        color: AppColors.fenceGreen,
-                      ),
+                    Consumer(
+                      builder: (BuildContext context, WidgetRef ref, _) {
+                        return AppButton(
+                          onPressed: () {
+                            ref.read(authNotifierProvider.notifier).logout();
+                            Navigator.pop(context);
+                          },
+                          title: "Yes, End Session",
+                          textStyle: TextStyle(
+                            fontSize: 15,
+                            color: AppColors.fenceGreen,
+                          ),
+                        );
+                      },
                     ),
                     AppButton(
                       onPressed: () => Navigator.pop(context),

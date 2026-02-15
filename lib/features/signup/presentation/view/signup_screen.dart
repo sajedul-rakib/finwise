@@ -1,4 +1,5 @@
 import 'package:finwise/core/widgets/loader.dart';
+import 'package:finwise/features/bottom_nav_bar/presentation/view/app_bottom_nav_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -94,9 +95,10 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
             //clear form state
             _formKey.currentState?.reset();
             // Navigate to Login screen
-            Navigator.pushReplacement(
+            Navigator.pushAndRemoveUntil(
               context,
-              MaterialPageRoute(builder: (_) => LoginScreen()),
+              MaterialPageRoute(builder: (_) => AppBottomNavBar()),
+              (path) => false,
             );
           }
         },

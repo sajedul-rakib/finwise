@@ -34,6 +34,9 @@ migrate_working_dir/
 /coverage/
 .vscode
 
+#Private file
+**/firebase_options.dart
+
 # Symbolication related
 app.*.symbols
 

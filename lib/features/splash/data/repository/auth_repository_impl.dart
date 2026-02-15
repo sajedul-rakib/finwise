@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:hive_ce_flutter/hive_ce_flutter.dart';
 import '../../domain/repository/auth_repository.dart';
 import '../../domain/entities/auth_state.dart';
 import '../../../signup/domain/entities/user_entity.dart';
@@ -70,7 +71,13 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<void> signOut() async {
-    await _firebaseAuth.signOut();
-    await _localDataSource.clearCache();
+    try {
+      await _firebaseAuth.signOut();
+      await _localDataSource.clearCache();
+      final settingsBox = await Hive.openBox("settings");
+      await settingsBox.delete('hasPin');
+    } catch (e) {
+      throw Exception("Logout failed");
+    }
   }
 }

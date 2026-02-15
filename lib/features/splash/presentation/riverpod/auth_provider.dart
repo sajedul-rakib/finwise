@@ -1,3 +1,4 @@
+import 'package:finwise/features/splash/domain/usecase/sign_out_use_case.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -43,6 +44,9 @@ final authRepositoryProvider = Provider<AuthRepository>((ref) {
 });
 
 // 4. Use Case Provider
+final signOutUseCaseProvider = Provider<SignOutUseCase>((ref) {
+  return SignOutUseCase(repo: ref.watch(authRepositoryProvider));
+});
 // The UI/Notifier will watch this provider
 final checkAuthStatusUseCaseProvider = Provider<AuthUseCase>((ref) {
   final repo = ref.watch(authRepositoryProvider);
