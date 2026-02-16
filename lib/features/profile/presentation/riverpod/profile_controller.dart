@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:hive_ce_flutter/hive_flutter.dart';
 import '../../domain/entities/user_entity.dart';
 import '../../domain/usecase/get_profile_use_case.dart';
 import '../../domain/usecase/update_profile_usecase.dart';
@@ -24,10 +23,7 @@ class ProfileController extends StateNotifier<AsyncValue<UserEntity?>> {
   Future<void> loadProfile() async {
     state = const AsyncLoading();
     try {
-      final authBox = await Hive.openBox("auth_box");
-      final userId = authBox.get("userId");
-
-      final user = await _getProfile.execute(userId);
+      final user = await _getProfile.execute();
       state = AsyncData(user);
     } catch (e, st) {
       state = AsyncError(e, st);
@@ -46,13 +42,11 @@ class ProfileController extends StateNotifier<AsyncValue<UserEntity?>> {
   }
 
   // Upload Avatar
-  Future<void> changeAvatar(String userId, File file) async {
-    // We keep the current user data but show a loading state
+  Future<void> changeAvatar(File file) async {
     final currentUser = state.value;
     state = const AsyncLoading();
     try {
-      await _uploadAvatar.execute(userId, file);
-      // Re-fetch data to get the new avatar URL
+      await _uploadAvatar.execute(currentUser!.userId, file);
       await loadProfile();
     } catch (e, st) {
       state = AsyncError(e, st);

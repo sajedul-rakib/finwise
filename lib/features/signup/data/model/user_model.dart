@@ -91,7 +91,7 @@ class UserModel extends UserEntity {
     return UserModel(
       userId: userId ?? this.userId,
       fullName: fullName ?? this.fullName,
-      email: this.email, // Email usually stays immutable
+      email: email, // Email usually stays immutable
       avatar: avatar ?? this.avatar,
       mobileNumber: mobileNumber ?? this.mobileNumber,
       dateOfBirth: dateOfBirth ?? this.dateOfBirth,

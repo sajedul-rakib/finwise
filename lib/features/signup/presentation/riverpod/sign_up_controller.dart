@@ -1,18 +1,24 @@
-//provide usecase
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:finwise/features/signup/data/datasource/remote/sign_up_remote_datasource.dart';
 import 'package:finwise/features/signup/domain/usecase/sign_up_use_case.dart';
+import 'package:finwise/features/splash/presentation/riverpod/auth_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import '../../data/repository/sign_up_repository_impl.dart';
 import '../../domain/entities/user_entity.dart';
 import '../../domain/repository/sign_up_repository.dart';
 
 // 1. Repository Provider
+final signUpRemoteDataSourceProvider = Provider((ref) {
+  return SignUpRemoteDataSourceImpl(
+    auth: ref.watch(firebaseAuthProvider),
+    fireStore: ref.watch(firestoreProvider),
+  );
+});
+
 final signUpRepositoryProvider = Provider<SignUpRepository>((ref) {
   return SignUpRepositoryImpl(
-    firebaseAuth: FirebaseAuth.instance,
-    firestore: FirebaseFirestore.instance,
+    signUpRemoteDataSource: ref.watch(signUpRemoteDataSourceProvider),
+    authRepository: ref.watch(authRepositoryProvider),
   );
 });
 
@@ -31,9 +37,27 @@ class SignUpController extends StateNotifier<AsyncValue<UserEntity?>> {
     required UserEntity user,
   }) async {
     state = const AsyncLoading();
-    state = await AsyncValue.guard(
-      () => _signUpUseCase(password: password, userEntity: user),
-    );
+    try {
+      final res = await _signUpUseCase(password: password, userEntity: user);
+      state = AsyncData(res);
+    } on FirebaseAuthException catch (e, st) {
+      state = AsyncError(_handleAuthException(e), st);
+    } catch (e, stackTrace) {
+      state = AsyncError(e, stackTrace);
+    }
+  }
+
+  String _handleAuthException(FirebaseAuthException e) {
+    switch (e.code) {
+      case 'weak-password':
+        return 'The password provided is too weak.';
+      case 'email-already-in-use':
+        return 'An account already exists for that email.';
+      case 'invalid-email':
+        return 'The email address is not valid.';
+      default:
+        return e.message ?? 'Authentication failed.';
+    }
   }
 }
 

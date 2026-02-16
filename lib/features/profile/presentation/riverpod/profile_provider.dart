@@ -28,6 +28,7 @@ final profileRepositoryProvider = Provider<ProfileRepository>(
   (ref) => ProfileRepositoryImpl(
     remoteDS: ref.watch(profileRemoteDSProvider),
     localDS: ref.watch(profileLocalDSProvider),
+    authRepository: ref.watch(authRepositoryProvider),
   ),
 );
 

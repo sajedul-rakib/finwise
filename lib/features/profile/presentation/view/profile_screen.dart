@@ -21,8 +21,10 @@ class ProfileScreen extends ConsumerStatefulWidget {
 class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   @override
   void initState() {
-    ref.read(profileControllerProvider.notifier).loadProfile();
     super.initState();
+    Future.microtask(() {
+      ref.read(profileControllerProvider.notifier).loadProfile();
+    });
   }
 
   @override

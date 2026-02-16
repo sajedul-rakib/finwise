@@ -18,13 +18,15 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
 
   @override
   Future<void> cacheUser(UserModel user) async {
-    log("User is ${user.toMap()}");
+    // save current user id
+    _authBox.put("userId", user.userId);
     // Store user as a Map/JSON string
     await _authBox.put(_userKey, user.toMap());
   }
 
   @override
   Future<UserModel?> getLastUser() async {
+    log("Data fetch from local storage");
     final userData = _authBox.get(_userKey);
     if (userData != null) {
       return UserModel.fromMap(Map<String, dynamic>.from(userData));
@@ -35,5 +37,6 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
   @override
   Future<void> clearCache() async {
     await _authBox.delete(_userKey);
+    await _authBox.delete("userId");
   }
 }

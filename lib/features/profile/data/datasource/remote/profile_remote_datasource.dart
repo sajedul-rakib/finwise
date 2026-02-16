@@ -12,11 +12,6 @@ class ProfileRemoteDataSource {
   }) : _firestore = firestore,
        _storage = storage;
 
-  Future<Map<String, dynamic>> getUser(String userId) async {
-    final doc = await _firestore.collection('users').doc(userId).get();
-    return doc.data() ?? {};
-  }
-
   Future<void> updateUser(String userId, Map<String, dynamic> data) async {
     await _firestore.collection('users').doc(userId).update(data);
   }

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -20,8 +18,6 @@ final routerProvider = Provider<GoRouter>((ref) {
       final authState = ref.read(authNotifierProvider);
       final path = state.uri.path;
 
-      log("The auth state is $authState and current path is $path");
-
       // 1. If still loading data, stay at splash
       if (authState == AuthState.unknown) return '/splash';
 
@@ -32,7 +28,6 @@ final routerProvider = Provider<GoRouter>((ref) {
       if (authState == AuthState.pinRequired && path != '/pin') return '/pin';
 
       // 3. Define page types
-      // Remove '/splash' from public pages because no one should stay there after init
       final isAuthPage = path == '/auth' || path == '/onboarding';
 
       // 4. Authenticated Logic
@@ -64,6 +59,10 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (context, state) => const AppBottomNavBar(),
       ),
       GoRoute(path: '/pin', builder: (context, state) => const PinScreen()),
+      GoRoute(
+        path: '/dashboard',
+        builder: (context, state) => const AppBottomNavBar(),
+      ),
     ],
   );
 });
@@ -71,7 +70,7 @@ final routerProvider = Provider<GoRouter>((ref) {
 class AuthListenable extends ChangeNotifier {
   AuthListenable(Ref ref) {
     ref.listen(authNotifierProvider, (previous, next) {
-      notifyListeners(); // Trigger GoRouter redirect logic
+      notifyListeners();
     });
   }
 }

@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'package:finwise/features/splash/domain/repository/auth_repository.dart';
+
 import '../../../signup/data/model/user_model.dart';
 import '../../domain/entities/user_entity.dart';
 import '../../domain/repository/profile_repository.dart';
@@ -8,24 +10,17 @@ import '../datasource/remote/profile_remote_datasource.dart';
 class ProfileRepositoryImpl implements ProfileRepository {
   final ProfileRemoteDataSource remoteDS;
   final ProfileLocalDataSource localDS;
+  final AuthRepository _authRepository;
 
-  ProfileRepositoryImpl({required this.remoteDS, required this.localDS});
+  ProfileRepositoryImpl({
+    required this.remoteDS,
+    required this.localDS,
+    required AuthRepository authRepository,
+  }) : _authRepository = authRepository;
 
   @override
-  Future<UserEntity> getLoggedUserProfileData({required String userId}) async {
-    // 1. Try to get from Cache for instant UI feedback
-    final cached = await localDS.getProfileData();
-    if (cached != null) {
-      return cached;
-    }
-
-    // 2. Fetch from Remote
-    final remoteData = await remoteDS.getUser(userId);
-    final userModel = UserModel.fromMap(remoteData);
-
-    // 3. Update Cache
-    await localDS.cacheUserProfile(userModel);
-
+  Future<UserEntity> getLoggedUserProfileData() async {
+    final userModel = await _authRepository.getCurrentUserProfile();
     return userModel;
   }
 

@@ -32,7 +32,7 @@ class SecurityItem extends StatelessWidget {
                 Row(
                   spacing: iconWidgets == null ? 0 : 15,
                   children: [
-                    if (iconWidgets != null) iconWidgets!,
+                    ?iconWidgets,
                     Text(
                       title,
                       style: TextStyle(

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:finwise/features/splash/data/datasource/local/auth_local_datasource.dart';
+import 'package:finwise/features/splash/domain/entities/auth_state.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -28,10 +29,13 @@ final loginLocalDataSourceProvider = Provider<AuthLocalDataSource>((ref) {
 
 // 3. Repository Provider (Matches your abstract LoginRepository)
 final loginRepositoryProvider = Provider<LoginRepository>((ref) {
-  final remoteDS = ref.watch(loginRemoteDataSourceProvider);
-  final localDS = ref.watch(loginLocalDataSourceProvider);
+  final loginRemoteSourceProvider = ref.watch(loginRemoteDataSourceProvider);
+  final authRepoProvider = ref.watch(authRepositoryProvider);
 
-  return LoginRepositoryImpl(remoteDS, localDS);
+  return LoginRepositoryImpl(
+    loginRemoteDataSource: loginRemoteSourceProvider,
+    authRepository: authRepoProvider,
+  );
 });
 
 // 4. Use Case Provider
@@ -42,7 +46,7 @@ final loginUseCaseProvider = Provider<LoginUseCase>((ref) {
 
 // 5. Controller Provider (The one your UI listens to)
 final loginControllerProvider =
-    StateNotifierProvider<LoginController, AsyncValue<void>>((ref) {
+    StateNotifierProvider<LoginController, AsyncValue<AuthState>>((ref) {
       final useCase = ref.watch(loginUseCaseProvider);
       return LoginController(useCase, ref);
     });

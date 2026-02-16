@@ -6,7 +6,7 @@ import '../constant/app_colors.dart';
 class FormInput extends StatelessWidget {
   const FormInput({
     super.key,
-    required this.hintText,
+    this.hintText,
     this.labelText,
     this.validator,
     this.controller,
@@ -33,9 +33,10 @@ class FormInput extends StatelessWidget {
     this.inputFormatters,
     this.obscureText = false,
     this.errorBuilder,
+    this.readOnly,
   });
 
-  final String hintText;
+  final String? hintText;
   final String? labelText;
   final String? Function(String?)? validator;
   final TextEditingController? controller;
@@ -62,6 +63,7 @@ class FormInput extends StatelessWidget {
   final List<TextInputFormatter>? inputFormatters;
   final bool obscureText;
   final Widget Function(BuildContext, String?)? errorBuilder;
+  final bool? readOnly;
 
   @override
   Widget build(BuildContext context) {
@@ -81,6 +83,7 @@ class FormInput extends StatelessWidget {
           ),
 
         TextFormField(
+          readOnly: readOnly ?? false,
           errorBuilder: errorBuilder,
           style: TextStyle(
             color: textColor ?? AppColors.textGreenColor,

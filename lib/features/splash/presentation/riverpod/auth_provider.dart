@@ -1,6 +1,7 @@
 import 'package:finwise/features/splash/domain/usecase/sign_out_use_case.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_ce_flutter/hive_ce_flutter.dart';
 
@@ -12,11 +13,15 @@ import '../../domain/usecase/auth_use_case.dart';
 
 // 1. External SDK Providers
 final firebaseAuthProvider = Provider<FirebaseAuth>(
-  (ref) => FirebaseAuth.instance,
+  (ref) => throw UnimplementedError(),
 );
 final firestoreProvider = Provider<FirebaseFirestore>(
-  (ref) => FirebaseFirestore.instance,
+  (ref) => throw UnimplementedError(),
 );
+final firebaseStorageProvider = Provider<FirebaseStorage>(
+  (ref) => throw UnimplementedError(),
+);
+
 // This provider is overridden in main.dart with the opened Hive box
 final authBoxProvider = Provider<Box>((ref) => throw UnimplementedError());
 final settingsBoxProvider = Provider<Box>((ref) => throw UnimplementedError());
@@ -34,12 +39,10 @@ final authLocalDataSourceProvider = Provider<AuthLocalDataSource>((ref) {
 });
 
 // 3. Repository Provider
-// Links the implementations to the abstract Repository interface
 final authRepositoryProvider = Provider<AuthRepository>((ref) {
   return AuthRepositoryImpl(
     remoteDataSource: ref.watch(authRemoteDataSourceProvider),
     localDataSource: ref.watch(authLocalDataSourceProvider),
-    firebaseAuth: ref.watch(firebaseAuthProvider),
   );
 });
 

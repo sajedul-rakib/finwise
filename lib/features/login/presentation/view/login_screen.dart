@@ -1,6 +1,7 @@
 import 'package:finwise/core/widgets/image_viewer.dart';
 import 'package:finwise/core/widgets/loader.dart';
 import 'package:finwise/features/login/presentation/view/forget_password_screen.dart';
+import 'package:finwise/features/splash/domain/entities/auth_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -36,7 +37,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     final loginState = ref.watch(loginControllerProvider);
 
     // Listen for errors to show a SnackBar
-    ref.listen<AsyncValue<void>>(loginControllerProvider, (previous, next) {
+    ref.listen<AsyncValue<AuthState>>(loginControllerProvider, (
+      previous,
+      next,
+    ) {
       next.whenOrNull(
         error: (error, stackTrace) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -45,6 +49,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               backgroundColor: Colors.redAccent,
             ),
           );
+        },
+        data: (state) {
+          if (state == AuthState.authenticated) {
+            _key.currentState?.reset();
+          }
         },
       );
     });
@@ -140,7 +149,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                   ref
                                       .read(loginControllerProvider.notifier)
                                       .login(email, password);
-                                  _key.currentState?.reset();
                                 } else {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(

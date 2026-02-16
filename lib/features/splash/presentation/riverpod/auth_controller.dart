@@ -23,19 +23,21 @@ class AuthNotifier extends Notifier<AuthState> {
       final result = await checkAuthUseCase.checkStatus();
       state = result;
     } catch (e) {
+      //if fetch any error while try to check user is authenticated or not -> remove previous user data
+      logout();
       state = AuthState.unauthenticated;
     }
   }
 
   Future<void> logout() async {
-    await Future.delayed(const Duration(seconds: 2));
+    // await Future.delayed(const Duration(seconds: 2)); // it for delay
     final signOutUseCase = ref.read(signOutUseCaseProvider);
     final res = await signOutUseCase.call();
     state = res;
   }
 }
 
-// The modern NotifierProvider
+// Thea NotifierProvider
 final authNotifierProvider = NotifierProvider<AuthNotifier, AuthState>(() {
   return AuthNotifier();
 });
