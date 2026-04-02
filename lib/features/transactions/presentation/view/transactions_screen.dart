@@ -1,7 +1,9 @@
-import 'package:finwise/features/transactions/presentation/widgets/transaction_card.dart';
+import 'package:finwise/features/category/domain/entities/transaction_entity.dart';
+import 'package:finwise/features/category/presentation/widgets/transaction_tile_card.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/constant/app_colors.dart';
+import '../widgets/month_view_text.dart';
 import '../widgets/stats_container.dart';
 import '../widgets/transaction_container.dart';
 
@@ -53,17 +55,8 @@ class TransactionsScreen extends StatelessWidget {
                 children: [
                   const SizedBox(height: 20),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      Text(
-                        'April',
-                        style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w700,
-                          color: AppColors.textGreenColor,
-                        ),
-                      ),
-
                       GestureDetector(
                         onTap: () {},
                         behavior: HitTestBehavior.opaque,
@@ -82,38 +75,137 @@ class TransactionsScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 20),
                   Expanded(
                     child: SingleChildScrollView(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.start,
+                        spacing: 10,
                         children: [
-                          TransactionCard(),
-                          TransactionCard(),
-                          TransactionCard(),
-                          Text(
-                            'March',
-                            style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w700,
-                              color: AppColors.textGreenColor,
+                          MonthViewText(monthName: 'April'),
+                          TransactionTileCard(
+                            transaction: TransactionEntity(
+                              id: 'adf',
+                              title: "Salary",
+                              amount: 1290,
+                              categoryId: 'categoryId',
+                              type: TransactionType.savings,
+                              createdAt: DateTime.now(),
+                              updatedAt: DateTime.now(),
                             ),
                           ),
-                          TransactionCard(),
-                          TransactionCard(),
-                          TransactionCard(),
-                          Text(
-                            'February',
-                            style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w700,
-                              color: AppColors.textGreenColor,
+                          TransactionTileCard(
+                            transaction: TransactionEntity(
+                              id: 'adf',
+                              title: "Salary",
+                              amount: 1290,
+                              categoryId: 'categoryId',
+                              type: TransactionType.savings,
+                              createdAt: DateTime.now(),
+                              updatedAt: DateTime.now(),
                             ),
                           ),
-                          TransactionCard(),
-                          TransactionCard(),
-                          TransactionCard(),
+                          TransactionTileCard(
+                            transaction: TransactionEntity(
+                              id: 'adf',
+                              title: "Salary",
+                              amount: 1290,
+                              categoryId: 'categoryId',
+                              type: TransactionType.savings,
+                              createdAt: DateTime.now(),
+                              updatedAt: DateTime.now(),
+                            ),
+                          ),
+                          TransactionTileCard(
+                            transaction: TransactionEntity(
+                              id: 'adf',
+                              title: "Salary",
+                              amount: 1290,
+                              categoryId: 'categoryId',
+                              type: TransactionType.savings,
+                              createdAt: DateTime.now(),
+                              updatedAt: DateTime.now(),
+                            ),
+                          ),
+                          MonthViewText(monthName: 'March'),
+                          TransactionTileCard(
+                            transaction: TransactionEntity(
+                              id: 'adf',
+                              title: "Salary",
+                              amount: 1290,
+                              categoryId: 'categoryId',
+                              type: TransactionType.savings,
+                              createdAt: DateTime.now(),
+                              updatedAt: DateTime.now(),
+                            ),
+                          ),
+                          TransactionTileCard(
+                            transaction: TransactionEntity(
+                              id: 'adf',
+                              title: "Salary",
+                              amount: 1290,
+                              categoryId: 'categoryId',
+                              type: TransactionType.savings,
+                              createdAt: DateTime.now(),
+                              updatedAt: DateTime.now(),
+                            ),
+                          ),
+                          TransactionTileCard(
+                            transaction: TransactionEntity(
+                              id: 'adf',
+                              title: "Salary",
+                              amount: 1290,
+                              categoryId: 'categoryId',
+                              type: TransactionType.savings,
+                              createdAt: DateTime.now(),
+                              updatedAt: DateTime.now(),
+                            ),
+                          ),
+                          TransactionTileCard(
+                            transaction: TransactionEntity(
+                              id: 'adf',
+                              title: "Salary",
+                              amount: 1290,
+                              categoryId: 'categoryId',
+                              type: TransactionType.savings,
+                              createdAt: DateTime.now(),
+                              updatedAt: DateTime.now(),
+                            ),
+                          ),
+                          MonthViewText(monthName: 'February'),
+                          TransactionTileCard(
+                            transaction: TransactionEntity(
+                              id: 'adf',
+                              title: "Salary",
+                              amount: 1290,
+                              categoryId: 'categoryId',
+                              type: TransactionType.savings,
+                              createdAt: DateTime.now(),
+                              updatedAt: DateTime.now(),
+                            ),
+                          ),
+                          TransactionTileCard(
+                            transaction: TransactionEntity(
+                              id: 'adf',
+                              title: "Salary",
+                              amount: 1290,
+                              categoryId: 'categoryId',
+                              type: TransactionType.savings,
+                              createdAt: DateTime.now(),
+                              updatedAt: DateTime.now(),
+                            ),
+                          ),
+                          TransactionTileCard(
+                            transaction: TransactionEntity(
+                              id: 'adf',
+                              title: "Salary",
+                              amount: 1290,
+                              categoryId: 'categoryId',
+                              type: TransactionType.savings,
+                              createdAt: DateTime.now(),
+                              updatedAt: DateTime.now(),
+                            ),
+                          ),
                         ],
                       ),
                     ),

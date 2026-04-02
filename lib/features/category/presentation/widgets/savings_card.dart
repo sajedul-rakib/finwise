@@ -1,8 +1,10 @@
+import 'package:finwise/core/extension/text_style_extension.dart';
 import 'package:finwise/core/utils/extension/string_extenstion.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 import '../../../../core/constant/app_colors.dart';
-import '../../../../core/widgets/image_viewer.dart';
+import '../../../../core/widgets/app_text_widget.dart';
 
 class SavingsCard extends StatelessWidget {
   const SavingsCard({
@@ -34,16 +36,19 @@ class SavingsCard extends StatelessWidget {
             Container(
               padding: EdgeInsets.all(15),
               decoration: BoxDecoration(
-                color: AppColors.lightBlue,
+                color: AppColors.lightGreen,
                 borderRadius: BorderRadius.circular(20),
               ),
 
-              child: ImageViewer(
-                imagePath: icon,
+              child: SvgPicture.asset(
+                'assets/category-icons/$icon',
+                colorFilter: ColorFilter.mode(
+                  AppColors.fenceGreen,
+                  BlendMode.srcIn,
+                ),
                 width: 30,
                 height: 30,
                 fit: BoxFit.contain,
-                color: AppColors.whiteColor,
               ),
             ),
             Column(
@@ -51,34 +56,27 @@ class SavingsCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               spacing: 5,
               children: [
-                Text(
+                AppText(
                   savingsTitle,
-                  style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.fenceGreen,
-                  ),
+                  size: TextSize.xl,
+                  weight: AppFontWeight.bold,
+                  color: AppColors.fenceGreen,
                 ),
-                Text(
+                AppText(
                   createAt.formatDate(createAt),
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w800,
-                    color: AppColors.oceanBlue,
-                  ),
+                  size: TextSize.sm,
+                  weight: AppFontWeight.extraBold,
+                  color: AppColors.oceanBlue,
                 ),
               ],
             ),
           ],
         ),
-
-        Text(
+        AppText(
           '\$$savingsAmount',
-          style: TextStyle(
-            fontSize: 15,
-            fontWeight: FontWeight.w700,
-            color: AppColors.fenceGreen,
-          ),
+          size: TextSize.xl,
+          weight: AppFontWeight.bold,
+          color: AppColors.fenceGreen,
         ),
       ],
     );

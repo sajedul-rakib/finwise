@@ -1,101 +1,68 @@
+import 'package:finwise/core/extension/text_style_extension.dart';
 import 'package:finwise/core/widgets/app_btn.dart';
+import 'package:finwise/core/widgets/app_text_widget.dart';
+import 'package:finwise/core/widgets/loader.dart';
+import 'package:finwise/core/widgets/transactions_stats.dart';
+import 'package:finwise/features/category/domain/entities/transaction_entity.dart';
 import 'package:finwise/features/category/presentation/view/add_expense_screen.dart';
-import 'package:finwise/features/category/presentation/view/savings_screen.dart';
-import 'package:finwise/features/category/presentation/widgets/expense_card.dart';
+import 'package:finwise/features/category/presentation/widgets/transaction_tile_card.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/constant/app_colors.dart';
-import '../../../../core/widgets/image_viewer.dart';
-import '../../data/model/category_card_model.dart';
-import '../widgets/add_dialog_category.dart';
+import '../riverpod/fetch_transactions_category_id_transaction_type_notifier.dart';
 
-class CategoryViewScreen extends StatelessWidget {
+class CategoryViewScreen extends ConsumerStatefulWidget {
+  final String categoryId;
+  final TransactionType transactionType;
+  final String screenTitle;
+
   const CategoryViewScreen({
     super.key,
     required this.screenTitle,
-    required this.categoryCardModel,
+    required this.categoryId,
+    required this.transactionType,
   });
 
-  final String screenTitle;
-  final CategoryCardModel categoryCardModel;
+  @override
+  ConsumerState<CategoryViewScreen> createState() => _CategoryViewScreenState();
+}
+
+class _CategoryViewScreenState extends ConsumerState<CategoryViewScreen> {
+  late final _providerParams = (
+    categoryId: widget.categoryId,
+    type: widget.transactionType,
+  );
+
+  @override
+  void initState() {
+    super.initState();
+    Future.microtask(() {
+      ref
+          .read(transactionListProvider(_providerParams).notifier)
+          .loadTransactionData(
+            categoryId: widget.categoryId,
+            transactionType: widget.transactionType,
+          );
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    // Watch specifically for this category's data
+    final transactionsAsync = ref.watch(
+      transactionListProvider(_providerParams),
+    );
+
     return Scaffold(
-      appBar: AppBar(title: Text(screenTitle)),
+      appBar: AppBar(title: Text(widget.screenTitle)),
       body: Column(
         children: [
-          // Top Stats Section
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 40.0, vertical: 10),
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    _buildStatItem(
-                      label: "Total Balance",
-                      amount: "\$${categoryCardModel.totalBalance}",
-                      icon: Icons.arrow_upward,
-                      amountColor: AppColors.honeydewGreen,
-                    ),
-                    const ImageViewer(
-                      imagePath: 'assets/images/icons/line.png',
-                    ),
-                    _buildStatItem(
-                      label: "Total Expense",
-                      amount: "-\$${categoryCardModel.totalExpense}",
-                      icon: Icons.arrow_downward,
-                      amountColor: AppColors.oceanBlue,
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 25),
-                Column(
-                  children: [
-                    LinearProgressIndicator(
-                      value: 0.3,
-                      backgroundColor: AppColors.cyprusGreen,
-                      valueColor: AlwaysStoppedAnimation<Color>(
-                        AppColors.honeydewGreen,
-                      ),
-                      minHeight: 20,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    const SizedBox(height: 12),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.all(2),
-                          decoration: BoxDecoration(
-                            border: Border.all(color: AppColors.cyprusGreen),
-                            borderRadius: BorderRadius.circular(4),
-                          ),
-                          child: Icon(
-                            Icons.check,
-                            size: 12,
-                            color: AppColors.cyprusGreen,
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        Text(
-                          '30% of your expenses, looks good.',
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: AppColors.cyprusGreen,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ],
-            ),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 40.0, vertical: 10),
+            child: TransactionsStats(),
           ),
-
           const SizedBox(height: 20),
-
           Expanded(
             child: Container(
               width: double.infinity,
@@ -109,45 +76,67 @@ class CategoryViewScreen extends StatelessWidget {
               child: Column(
                 children: [
                   Expanded(
-                    child: ListView.builder(
-                      padding: const EdgeInsets.all(30),
-                      itemCount: categoryCardModel.transactionItems.length,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 10.0),
-                          child: ExpenseCard(
-                            icon: categoryCardModel.icon,
-                            savingsTitle:
-                                categoryCardModel.transactionItems[index].title,
-                            createAt: categoryCardModel
-                                .transactionItems[index]
-                                .timestamp,
-                            savingsAmount:
-                                '${categoryCardModel.transactionItems[index].amount}',
-                          ),
-                        );
-                      },
+                    child: transactionsAsync.when(
+                      data: (transactions) => transactions.isEmpty
+                          ? Center(
+                              child: AppText(
+                                "No Transaction Found!",
+                                size: TextSize.xl,
+                                weight: AppFontWeight.bold,
+                                color: AppColors.textGreenColor,
+                              ),
+                            )
+                          : ListView.builder(
+                              padding: const EdgeInsets.all(30),
+                              itemCount: transactions.length,
+                              itemBuilder: (context, index) {
+                                return Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 10.0,
+                                  ),
+                                  // Pass the model directly from the list
+                                  child: TransactionTileCard(
+                                    transaction: transactions[index],
+                                  ),
+                                );
+                              },
+                            ),
+                      error: (err, st) => Center(
+                        child: AppText(
+                          err.toString(),
+                          size: TextSize.lg,
+                          color: AppColors.errorColor,
+                          weight: AppFontWeight.bold,
+                        ),
+                      ),
+                      loading: () => const Loader(),
                     ),
                   ),
                   SafeArea(
-                    child: AppButton(
-                      title: "Add Expense",
-                      textStyle: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.textGreenColor,
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 20),
+                      child: AppButton(
+                        title: "Add Expense",
+                        textStyle: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.textGreenColor,
+                        ),
+                        onPressed: () async {
+                          // Wait for user to return, THEN invalidate to refresh list
+                          await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => const AddExpenseScreen(),
+                            ),
+                          );
+                          ref.invalidate(
+                            transactionListProvider(_providerParams),
+                          );
+                        },
                       ),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => const AddExpenseScreen(),
-                          ),
-                        );
-                      },
                     ),
                   ),
-                  const SizedBox(height: 20),
                 ],
               ),
             ),
@@ -155,56 +144,5 @@ class CategoryViewScreen extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  Widget _buildStatItem({
-    required String label,
-    required String amount,
-    required IconData icon,
-    required Color amountColor,
-  }) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                border: Border.all(color: AppColors.cyprusGreen),
-                borderRadius: BorderRadius.circular(4),
-              ),
-              child: Icon(icon, size: 10, color: AppColors.cyprusGreen),
-            ),
-            const SizedBox(width: 5),
-            Text(
-              label,
-              style: TextStyle(fontSize: 12, color: AppColors.textGreenColor),
-            ),
-          ],
-        ),
-        const SizedBox(height: 5),
-        Text(
-          amount,
-          style: TextStyle(
-            fontSize: 22,
-            fontWeight: FontWeight.bold,
-            color: amountColor,
-          ),
-        ),
-      ],
-    );
-  }
-
-  void clickCategory(BuildContext context, String id) {
-    switch (id) {
-      case "add":
-        showAddDialog(context);
-      case "savings":
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const SavingsScreen()),
-        );
-        break;
-    }
   }
 }

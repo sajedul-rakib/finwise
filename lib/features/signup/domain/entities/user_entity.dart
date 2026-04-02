@@ -4,6 +4,8 @@ class UserEntity {
   final String email;
   final String? avatar;
   final String? mobileNumber;
+  final String? countryName;
+  final String? currency;
   final DateTime? dateOfBirth;
   final DateTime? updateAt;
   final DateTime? createAt;
@@ -17,5 +19,7 @@ class UserEntity {
     this.dateOfBirth,
     this.updateAt,
     this.createAt,
+    this.countryName,
+    this.currency,
   });
 }

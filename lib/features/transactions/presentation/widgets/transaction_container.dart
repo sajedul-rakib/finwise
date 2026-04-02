@@ -1,3 +1,5 @@
+import 'package:finwise/core/extension/text_style_extension.dart';
+import 'package:finwise/core/widgets/app_text_widget.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/constant/app_colors.dart';
@@ -48,23 +50,21 @@ class TransactionContainer extends StatelessWidget {
               imagePath: imagePath,
             ),
           ),
-          Text(
+          AppText(
             title,
-            style: TextStyle(
-              fontSize: 15,
-              fontWeight: FontWeight.w700,
-              color: AppColors.fenceGreen,
-            ),
+
+            size: TextSize.xl,
+            weight: AppFontWeight.bold,
+            color: AppColors.fenceGreen,
           ),
-          Text(
+          AppText(
             "\$$amount",
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: title.toLowerCase() == 'expense'
-                  ? AppColors.oceanBlue
-                  : AppColors.fenceGreen,
-            ),
+
+            size: TextSize.xxl,
+            weight: AppFontWeight.bold,
+            color: title.toLowerCase() == 'expense'
+                ? AppColors.oceanBlue
+                : AppColors.fenceGreen,
           ),
         ],
       ),

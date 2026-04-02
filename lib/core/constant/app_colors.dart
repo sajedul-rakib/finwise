@@ -14,4 +14,5 @@ class AppColors {
   static Color whiteColor = const Color(0xffffffff);
   static Color blackColor = const Color(0xff000000);
   static Color textGreenColor = const Color(0xff093030);
+  static Color errorColor = const Color(0xff950606);
 }

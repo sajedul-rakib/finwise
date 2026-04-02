@@ -34,6 +34,7 @@ class FormInput extends StatelessWidget {
     this.obscureText = false,
     this.errorBuilder,
     this.readOnly,
+    this.child,
   });
 
   final String? hintText;
@@ -65,6 +66,8 @@ class FormInput extends StatelessWidget {
   final Widget Function(BuildContext, String?)? errorBuilder;
   final bool? readOnly;
 
+  final Widget? child;
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -82,47 +85,51 @@ class FormInput extends StatelessWidget {
             ),
           ),
 
-        TextFormField(
-          readOnly: readOnly ?? false,
-          errorBuilder: errorBuilder,
-          style: TextStyle(
-            color: textColor ?? AppColors.textGreenColor,
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-          ),
-          maxLines: maxLines,
-          obscureText: obscureText,
-          decoration: InputDecoration(
-            prefixIcon: prefixIcon,
-            suffixIcon: suffixIcon,
-            hintText: hintText,
-            hintStyle: TextStyle(
-              color: hintColor ?? Color(0xff81A498),
-              fontSize: 15,
-              fontWeight: FontWeight.bold,
-            ),
-            border:
-                border ??
-                OutlineInputBorder(
-                  borderSide: BorderSide.none,
-                  borderRadius: BorderRadius.circular(maxLines == 1 ? 50 : 20),
+        child ??
+            TextFormField(
+              onTap: onTap,
+              readOnly: readOnly ?? false,
+              errorBuilder: errorBuilder,
+              style: TextStyle(
+                color: textColor ?? AppColors.textGreenColor,
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+              ),
+              maxLines: maxLines,
+              obscureText: obscureText,
+              decoration: InputDecoration(
+                prefixIcon: prefixIcon,
+                suffixIcon: suffixIcon,
+                hintText: hintText,
+                hintStyle: TextStyle(
+                  color: hintColor ?? Color(0xff81A498),
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
                 ),
-            filled: true,
-            fillColor: fillColor ?? AppColors.lightGreen,
-            contentPadding:
-                contentPadding ??
-                EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            enabledBorder: border,
-            focusedBorder: border,
-            errorBorder: border,
-            focusedErrorBorder: border,
-            errorStyle: TextStyle(color: Color(0xffef4444)),
-          ),
-          validator: validator,
-          controller: controller,
-          keyboardType: keyboardType,
-          inputFormatters: inputFormatters,
-        ),
+                border:
+                    border ??
+                    OutlineInputBorder(
+                      borderSide: BorderSide.none,
+                      borderRadius: BorderRadius.circular(
+                        maxLines == 1 ? 50 : 20,
+                      ),
+                    ),
+                filled: true,
+                fillColor: fillColor ?? AppColors.lightGreen,
+                contentPadding:
+                    contentPadding ??
+                    EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                enabledBorder: border,
+                focusedBorder: border,
+                errorBorder: border,
+                focusedErrorBorder: border,
+                errorStyle: TextStyle(color: Color(0xffef4444)),
+              ),
+              validator: validator,
+              controller: controller,
+              keyboardType: keyboardType,
+              inputFormatters: inputFormatters,
+            ),
       ],
     );
   }

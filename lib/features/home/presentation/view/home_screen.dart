@@ -22,18 +22,15 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: HomeAppBar(),
-      body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            const SizedBox(height: 10),
-            HomeHeader(),
-            const SizedBox(height: 20),
-            Expanded(child: HomeMain(tabController: _tabController)),
-          ],
-        ),
+      appBar: const HomeAppBar(),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SizedBox(height: 10),
+          const HomeHeader(),
+          const SizedBox(height: 20),
+          Expanded(child: HomeMain(tabController: _tabController)),
+        ],
       ),
     );
   }

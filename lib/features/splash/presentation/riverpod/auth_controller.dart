@@ -1,3 +1,5 @@
+import 'package:finwise/core/service/database/local_database_service.dart';
+import 'package:finwise/features/category/presentation/riverpod/category_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../domain/entities/auth_state.dart';
 import 'auth_provider.dart';
@@ -23,14 +25,14 @@ class AuthNotifier extends Notifier<AuthState> {
       final result = await checkAuthUseCase.checkStatus();
       state = result;
     } catch (e) {
-      //if fetch any error while try to check user is authenticated or not -> remove previous user data
       logout();
       state = AuthState.unauthenticated;
     }
   }
 
   Future<void> logout() async {
-    // await Future.delayed(const Duration(seconds: 2)); // it for delay
+    await LocalDatabase.instance.deleteDatabaseFile();
+    ref.invalidate(categoryStateProvider);
     final signOutUseCase = ref.read(signOutUseCaseProvider);
     final res = await signOutUseCase.call();
     state = res;

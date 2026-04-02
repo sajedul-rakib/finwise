@@ -36,6 +36,8 @@ class SignUpRemoteDataSourceImpl extends SignUpRemoteDatasource {
         userId: credential.user!.uid,
         fullName: user.fullName,
         email: user.email,
+        countryName: user.countryName,
+        currency: user.currency,
         mobileNumber: user.mobileNumber,
         dateOfBirth: user.dateOfBirth,
       );

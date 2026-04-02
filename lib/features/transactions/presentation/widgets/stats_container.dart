@@ -1,3 +1,5 @@
+import 'package:finwise/core/extension/text_style_extension.dart';
+import 'package:finwise/core/widgets/app_text_widget.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/constant/app_colors.dart';
@@ -17,21 +19,17 @@ class StatsContainer extends StatelessWidget {
       child: Column(
         spacing: 5,
         children: [
-          Text(
+          AppText(
             "Total Balance",
-            style: TextStyle(
-              fontSize: 15,
-              fontWeight: FontWeight.w700,
-              color: AppColors.textGreenColor,
-            ),
+            size: TextSize.xl,
+            weight: AppFontWeight.bold,
+            color: AppColors.textGreenColor,
           ),
-          Text(
+          AppText(
             '\$7,783.00',
-            style: TextStyle(
-              fontSize: 25,
-              fontWeight: FontWeight.bold,
-              color: AppColors.textGreenColor,
-            ),
+            size: TextSize.xxxl,
+            weight: AppFontWeight.extraBold,
+            color: AppColors.textGreenColor,
           ),
         ],
       ),

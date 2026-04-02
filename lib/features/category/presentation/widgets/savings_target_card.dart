@@ -1,5 +1,8 @@
+import 'package:finwise/core/extension/text_style_extension.dart';
+import 'package:finwise/core/widgets/app_text_widget.dart';
 import 'package:finwise/core/widgets/image_viewer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 import '../../../../core/constant/app_colors.dart';
 
@@ -20,7 +23,7 @@ class SavingsTargetCard extends StatelessWidget {
       width: 170,
       height: 170,
       decoration: BoxDecoration(
-        color: AppColors.lightBlue,
+        color: AppColors.lightGreen,
         borderRadius: BorderRadius.all(Radius.circular(50)),
       ),
       child: Column(
@@ -40,27 +43,28 @@ class SavingsTargetCard extends StatelessWidget {
                   strokeCap: StrokeCap.round,
                   backgroundColor: AppColors.lightGreen,
                   valueColor: AlwaysStoppedAnimation<Color>(
-                    AppColors.oceanBlue,
+                    AppColors.textGreenColor,
                   ),
                   strokeWidth: 5,
                 ),
               ),
-              ImageViewer(
-                imagePath: icon,
-                fit: BoxFit.contain,
+              SvgPicture.asset(
+                'assets/category-icons/$icon',
+                colorFilter: ColorFilter.mode(
+                  AppColors.fenceGreen,
+                  BlendMode.srcIn,
+                ),
                 width: 55,
                 height: 55,
-                color: AppColors.whiteColor,
+                fit: BoxFit.contain,
               ),
             ],
           ),
-          Text(
+          AppText(
             targetName,
-            style: TextStyle(
-              fontSize: 15,
-              fontWeight: FontWeight.w700,
-              color: AppColors.lightGreen,
-            ),
+            size: TextSize.xl,
+            weight: AppFontWeight.bold,
+            color: AppColors.textGreenColor,
           ),
         ],
       ),

@@ -1,3 +1,5 @@
+import 'package:finwise/core/extension/text_style_extension.dart';
+import 'package:finwise/core/widgets/app_text_widget.dart';
 import 'package:finwise/features/analysis/presentation/widgets/state_item.dart';
 import 'package:flutter/material.dart';
 import '../../../../core/constant/app_colors.dart';
@@ -74,13 +76,12 @@ class AnalysisMain extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
+                      AppText(
                         "Income & Expense",
-                        style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w700,
-                          color: AppColors.textGreenColor,
-                        ),
+
+                        size: TextSize.xl,
+                        weight: AppFontWeight.bold,
+                        color: AppColors.textGreenColor,
                       ),
                       Row(
                         spacing: 10,
@@ -142,13 +143,11 @@ class AnalysisMain extends StatelessWidget {
 
             Align(
               alignment: Alignment.centerLeft,
-              child: Text(
+              child: AppText(
                 "My Targets",
-                style: TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w700,
-                  color: AppColors.textGreenColor,
-                ),
+                size: TextSize.xl,
+                weight: AppFontWeight.bold,
+                color: AppColors.textGreenColor,
               ),
             ),
             const SizedBox(height: 20),

@@ -1,8 +1,8 @@
+import 'package:finwise/features/category/domain/entities/category_entity.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../../core/constant/app_colors.dart';
-import '../../../../core/widgets/image_viewer.dart';
-import '../../data/model/category_card_model.dart';
 
 class CategoryCard extends StatelessWidget {
   const CategoryCard({
@@ -11,7 +11,7 @@ class CategoryCard extends StatelessWidget {
     required this.clickCategory,
   });
 
-  final CategoryCardModel category;
+  final CategoryEntity category;
   final Function(BuildContext) clickCategory;
 
   @override
@@ -22,25 +22,23 @@ class CategoryCard extends StatelessWidget {
         children: [
           Expanded(
             child: Container(
-              width: 100,
-              height: 100,
-              padding: const EdgeInsets.all(10),
+              // width: 100,
+              // height: 100,
+              padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: AppColors.vividBlue,
+                color: AppColors.lightGreen,
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Center(
-                child: Transform.rotate(
-                  angle: category.title.toLowerCase() == 'entertainment'
-                      ? -90 * 3.1416 / 360
-                      : 0,
-                  child: ImageViewer(
-                    imagePath: category.icon,
-                    color: AppColors.lightGreen,
-                    width: 50,
-                    height: 50,
-                    fit: BoxFit.contain,
+                child: SvgPicture.asset(
+                  'assets/category-icons/${category.file}',
+                  colorFilter: ColorFilter.mode(
+                    AppColors.fenceGreen,
+                    BlendMode.srcIn,
                   ),
+                  width: 50,
+                  height: 50,
+                  fit: BoxFit.contain,
                 ),
               ),
             ),

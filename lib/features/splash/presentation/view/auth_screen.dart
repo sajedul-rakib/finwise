@@ -1,4 +1,6 @@
 import 'package:finwise/core/constant/app_colors.dart';
+import 'package:finwise/core/extension/text_style_extension.dart';
+import 'package:finwise/core/widgets/app_text_widget.dart';
 import 'package:finwise/core/widgets/image_viewer.dart';
 import 'package:finwise/features/login/presentation/view/forget_password_screen.dart';
 import 'package:finwise/features/signup/presentation/view/signup_screen.dart';
@@ -12,12 +14,8 @@ class AuthScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
-
     return Scaffold(
-      backgroundColor: isDarkMode
-          ? AppColors.fenceGreen
-          : AppColors.honeydewGreen,
+      backgroundColor: AppColors.honeydewGreen,
       body: Column(
         spacing: 10,
         mainAxisAlignment: MainAxisAlignment.center,
@@ -32,17 +30,12 @@ class AuthScreen extends StatelessWidget {
           ),
           SizedBox(
             width: 300,
-            child: Text(
+            child: AppText(
               'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.',
+              size: TextSize.sm,
+              weight: AppFontWeight.medium,
               textAlign: TextAlign.center,
-              style: TextStyle(
-                color: isDarkMode
-                    ? AppColors.lightGreen
-                    : AppColors.textGreenColor,
-                fontSize: 13,
-                fontWeight: FontWeight.w500,
-                letterSpacing: 1,
-              ),
+              color: AppColors.textGreenColor,
             ),
           ),
           ElevatedButton(
@@ -52,13 +45,11 @@ class AuthScreen extends StatelessWidget {
                 MaterialPageRoute(builder: (context) => LoginScreen()),
               );
             },
-            child: Text(
+            child: AppText(
               'Log In',
-              style: TextStyle(
-                color: AppColors.textGreenColor,
-                fontWeight: FontWeight.w700,
-                fontSize: 20,
-              ),
+              color: AppColors.textGreenColor,
+              weight: AppFontWeight.bold,
+              size: TextSize.xxl,
             ),
           ),
           ElevatedButton(
@@ -72,13 +63,11 @@ class AuthScreen extends StatelessWidget {
               backgroundColor: AppColors.lightGreen,
               textStyle: TextStyle(color: AppColors.cyprusGreen),
             ),
-            child: Text(
+            child: AppText(
               'Sign Up',
-              style: TextStyle(
-                fontSize: 20,
-                color: AppColors.cyprusGreen,
-                fontWeight: FontWeight.w700,
-              ),
+              size: TextSize.xxl,
+              color: AppColors.cyprusGreen,
+              weight: AppFontWeight.bold,
             ),
           ),
           TextButton(
@@ -88,16 +77,12 @@ class AuthScreen extends StatelessWidget {
                 MaterialPageRoute(builder: (context) => ForgetPasswordScreen()),
               );
             },
-            child: Text(
+            child: AppText(
               'Forgot Password?',
-              style: TextStyle(
-                fontFamily: GoogleFonts.leagueSpartan().fontFamily,
-                color: isDarkMode
-                    ? AppColors.lightGreen
-                    : AppColors.textGreenColor,
-                fontWeight: FontWeight.w900,
-                fontSize: 20,
-              ),
+              fontFamily: GoogleFonts.leagueSpartan().fontFamily,
+              color: AppColors.textGreenColor,
+              weight: AppFontWeight.extraBold,
+              size: TextSize.xxl,
             ),
           ),
         ],

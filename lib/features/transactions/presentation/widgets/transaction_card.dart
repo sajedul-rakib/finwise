@@ -1,3 +1,5 @@
+import 'package:finwise/core/extension/text_style_extension.dart';
+import 'package:finwise/core/widgets/app_text_widget.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/constant/app_colors.dart';
@@ -35,7 +37,6 @@ class TransactionCard extends StatelessWidget {
                   color: AppColors.lightBlue,
                   borderRadius: BorderRadius.circular(20),
                 ),
-
                 child: ImageViewer(
                   imagePath: 'assets/images/icons/dollar.png',
                   width: 30,
@@ -47,47 +48,39 @@ class TransactionCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
+                  AppText(
                     "Salary",
-                    style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w700,
-                      color: AppColors.fenceGreen,
-                    ),
+                    size: TextSize.lg,
+                    weight: AppFontWeight.bold,
+                    color: AppColors.fenceGreen,
                   ),
-                  Text(
+                  AppText(
                     "18:27 - April 30",
-                    style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w800,
-                      color: AppColors.oceanBlue,
-                    ),
+                    size: TextSize.sm,
+                    weight: AppFontWeight.extraBold,
+                    color: AppColors.oceanBlue,
                   ),
                 ],
               ),
               ImageViewer(imagePath: 'assets/images/icons/green_line.png'),
             ],
           ),
-          Text(
+          AppText(
             'Monthly',
-            style: TextStyle(
-              fontSize: 13,
-              fontWeight: FontWeight.w500,
-              color: AppColors.fenceGreen,
-            ),
+            size: TextSize.lg,
+            weight: AppFontWeight.medium,
+            color: AppColors.fenceGreen,
             textAlign: TextAlign.center,
           ),
           Row(
             spacing: 10,
             children: [
               ImageViewer(imagePath: 'assets/images/icons/green_line.png'),
-              Text(
+              AppText(
                 '\$4.000,00',
-                style: TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w700,
-                  color: AppColors.fenceGreen,
-                ),
+                size: TextSize.xl,
+                weight: AppFontWeight.bold,
+                color: AppColors.fenceGreen,
               ),
             ],
           ),

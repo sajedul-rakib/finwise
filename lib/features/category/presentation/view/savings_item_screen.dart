@@ -1,6 +1,5 @@
 import 'package:finwise/core/widgets/app_btn.dart';
 import 'package:finwise/core/widgets/image_viewer.dart';
-import 'package:finwise/features/category/data/model/category_card_model.dart';
 import 'package:finwise/features/category/presentation/view/add_savings.dart';
 import 'package:finwise/features/category/presentation/widgets/savings_card.dart';
 import 'package:finwise/features/category/presentation/widgets/savings_target_card.dart';
@@ -9,19 +8,12 @@ import 'package:flutter/material.dart';
 import '../../../../core/constant/app_colors.dart';
 
 class SavingsItemScreen extends StatelessWidget {
-  const SavingsItemScreen({
-    super.key,
-    required this.screenTitle,
-    required this.categoryCardModel,
-  });
-
-  final String screenTitle;
-  final CategoryCardModel categoryCardModel;
+  const SavingsItemScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(screenTitle)),
+      appBar: AppBar(title: Text("Home")),
       body: Column(
         children: [
           Expanded(
@@ -84,7 +76,7 @@ class SavingsItemScreen extends StatelessWidget {
                                 children: [
                                   SizedBox(width: 15),
                                   Text(
-                                    "\$${categoryCardModel.savings.goal.toString()}",
+                                    "\$${1200.0}",
                                     style: TextStyle(
                                       fontSize: 24,
                                       fontWeight: FontWeight.bold,
@@ -137,7 +129,7 @@ class SavingsItemScreen extends StatelessWidget {
                                 children: [
                                   SizedBox(width: 15),
                                   Text(
-                                    "\$${categoryCardModel.savings.savings.toString()}",
+                                    "\$${800}",
                                     style: TextStyle(
                                       fontSize: 24,
                                       fontWeight: FontWeight.bold,
@@ -151,9 +143,9 @@ class SavingsItemScreen extends StatelessWidget {
                         ],
                       ),
                       SavingsTargetCard(
-                        targetName: categoryCardModel.title,
-                        targetProgress: categoryCardModel.savings.progress,
-                        icon: categoryCardModel.icon,
+                        targetName: "Home",
+                        targetProgress: 30,
+                        icon: 'home.svg',
                       ),
                     ],
                   ),
@@ -196,7 +188,6 @@ class SavingsItemScreen extends StatelessWidget {
                           ),
                           Text(
                             '30% of your expenses, looks good.',
-
                             style: TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.normal,
@@ -213,23 +204,17 @@ class SavingsItemScreen extends StatelessWidget {
                       children: [
                         Expanded(
                           child: ListView.builder(
-                            itemCount:
-                                categoryCardModel.transactionItems.length,
+                            itemCount: 5,
                             itemBuilder: (context, index) {
                               return Padding(
                                 padding: const EdgeInsets.symmetric(
                                   vertical: 8.0,
                                 ),
                                 child: SavingsCard(
-                                  icon: categoryCardModel.icon,
-                                  savingsTitle: categoryCardModel
-                                      .transactionItems[index]
-                                      .title,
-                                  createAt: categoryCardModel
-                                      .transactionItems[index]
-                                      .timestamp,
-                                  savingsAmount:
-                                      '${categoryCardModel.transactionItems[index].amount}',
+                                  icon: 'home.svg',
+                                  savingsTitle: "Home",
+                                  createAt: DateTime.now().toIso8601String(),
+                                  savingsAmount: '800',
                                 ),
                               );
                             },
@@ -247,7 +232,8 @@ class SavingsItemScreen extends StatelessWidget {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => const AddSavings(),
+                                  builder: (context) =>
+                                      const AddSavingsScreen(),
                                 ),
                               );
                             },

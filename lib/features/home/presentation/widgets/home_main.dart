@@ -1,9 +1,9 @@
+import 'package:finwise/features/category/domain/entities/transaction_entity.dart';
+import 'package:finwise/features/category/presentation/widgets/transaction_tile_card.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
 import '../../../../core/constant/app_colors.dart';
 import '../../../../core/widgets/image_viewer.dart';
-import '../../../transactions/presentation/widgets/transaction_card.dart';
 
 class HomeMain extends StatelessWidget {
   const HomeMain({super.key, required TabController tabController})
@@ -235,7 +235,20 @@ class HomeMain extends StatelessWidget {
             padding: const EdgeInsets.only(top: 10),
             sliver: SliverList(
               delegate: SliverChildBuilderDelegate((context, index) {
-                return const TransactionCard();
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 12.0),
+                  child: TransactionTileCard(
+                    transaction: TransactionEntity(
+                      id: 'tere',
+                      title: "Salary",
+                      amount: 1200,
+                      categoryId: 'adfads',
+                      type: TransactionType.savings,
+                      createdAt: DateTime.now(),
+                      updatedAt: DateTime.now(),
+                    ),
+                  ),
+                );
               }, childCount: 10),
             ),
           ),
