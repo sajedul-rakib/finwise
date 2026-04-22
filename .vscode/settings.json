@@ -7,5 +7,6 @@
     "editor.formatOnSave": true
   },
   "editor.defaultFormatter": "Dart-Code.flutter",
-  "editor.formatOnSave": true
+  "editor.formatOnSave": true,
+  "dart.mcpServerLogFile": null
 }

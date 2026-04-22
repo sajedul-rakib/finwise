@@ -1,6 +1,5 @@
 import 'package:finwise/core/extension/text_style_extension.dart';
 import 'package:finwise/core/widgets/app_text_widget.dart';
-import 'package:finwise/core/widgets/image_viewer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
